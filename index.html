@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>YouTube Embedder</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0f1117;
+      --panel: #191d27;
+      --text: #f3f4f6;
+      --muted: #a8afbd;
+      --accent: #ff3434;
+      --border: #303747;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding: 32px 16px;
+      background: var(--bg);
+      color: var(--text);
+      font: 16px/1.5 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    main { width: min(820px, 100%); margin: 0 auto; }
+    h1 { margin: 0 0 8px; font-size: clamp(1.8rem, 5vw, 2.5rem); }
+    .intro { margin: 0 0 24px; color: var(--muted); }
+    .panel {
+      padding: 20px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: var(--panel);
+    }
+    label { display: block; margin-bottom: 8px; font-weight: 650; }
+    .controls { display: flex; gap: 10px; }
+    input {
+      flex: 1;
+      min-width: 0;
+      padding: 13px 14px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #0e1118;
+      color: var(--text);
+      font: inherit;
+    }
+    input:focus { outline: 2px solid #ff7777; outline-offset: 2px; }
+    button {
+      padding: 12px 16px;
+      border: 0;
+      border-radius: 10px;
+      background: var(--accent);
+      color: white;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    button:hover { filter: brightness(1.1); }
+    .message { min-height: 24px; margin: 10px 0 0; color: var(--muted); font-size: .93rem; }
+    .player { margin-top: 20px; }
+    .video-frame {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+      border-radius: 12px;
+      background: #050505;
+    }
+    .video-frame iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+    .empty {
+      display: grid;
+      place-items: center;
+      min-height: 220px;
+      padding: 24px;
+      border: 1px dashed var(--border);
+      border-radius: 12px;
+      color: var(--muted);
+      text-align: center;
+    }
+    .small { margin-top: 18px; color: var(--muted); font-size: .88rem; }
+    @media (max-width: 560px) {
+      .controls { flex-direction: column; }
+      button { width: 100%; }
+      .panel { padding: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>YouTube Embedder</h1>
+    <p class="intro">Paste a YouTube link to play the video right here.</p>
+
+    <section class="panel" aria-label="YouTube video player">
+      <form id="video-form">
+        <label for="youtube-url">YouTube URL</label>
+        <div class="controls">
+          <input
+            id="youtube-url"
+            name="youtube-url"
+            type="url"
+            placeholder="https://www.youtube.com/watch?v=..."
+            autocomplete="url"
+            required
+          >
+          <button type="submit">Embed Video</button>
+        </div>
+        <p class="message" id="message" role="status" aria-live="polite"></p>
+      </form>
+
+      <div class="player" id="player">
+        <div class="empty">Your embedded video will appear here.</div>
+      </div>
+    </section>
+
+    <p class="small">Tip: Standard YouTube links, youtu.be links, and YouTube Shorts links are supported. Some videos may not allow embedding.</p>
+  </main>
+
+  <script>
+    const form = document.getElementById('video-form');
+    const input = document.getElementById('youtube-url');
+    const player = document.getElementById('player');
+    const message = document.getElementById('message');
+
+    function getYouTubeVideoId(rawUrl) {
+      let url;
+      try {
+        url = new URL(rawUrl);
+      } catch {
+        return null;
+      }
+
+      const host = url.hostname.toLowerCase().replace(/^www\./, '');
+      let id = null;
+
+      if (host === 'youtu.be') {
+        id = url.pathname.split('/').filter(Boolean)[0];
+      } else if (host === 'youtube.com' || host === 'm.youtube.com' || host === 'music.youtube.com') {
+        if (url.pathname === '/watch') {
+          id = url.searchParams.get('v');
+        } else {
+          const parts = url.pathname.split('/').filter(Boolean);
+          if (['embed', 'shorts', 'live', 'v'].includes(parts[0])) {
+            id = parts[1];
+          }
+        }
+      }
+
+      // YouTube video IDs are 11 characters using letters, numbers, _ and -.
+      return id && /^[A-Za-z0-9_-]{11}$/.test(id) ? id : null;
+    }
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const videoId = getYouTubeVideoId(input.value.trim());
+
+      if (!videoId) {
+        message.textContent = 'Please enter a valid YouTube video URL.';
+        player.replaceChildren();
+        const empty = document.createElement('div');
+        empty.className = 'empty';
+        empty.textContent = 'Check the link and try again.';
+        player.appendChild(empty);
+        return;
+      }
+
+      message.textContent = '';
+      const frame = document.createElement('div');
+      frame.className = 'video-frame';
+
+      const iframe = document.createElement('iframe');
+      iframe.src = `https://www.youtube-nocookie.com/embed/${videoId}`;
+      iframe.title = 'Embedded YouTube video';
+      iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+      iframe.allowFullscreen = true;
+      iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+
+      frame.appendChild(iframe);
+      player.replaceChildren(frame);
+    });
+  </script>
+</body>
+</html>
