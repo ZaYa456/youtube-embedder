@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -12,178 +13,624 @@
       --text: #f3f4f6;
       --muted: #a8afbd;
       --accent: #ff3434;
-      --border: #303747;
+      --border: #303747
     }
-    * { box-sizing: border-box; }
+
+    * {
+      box-sizing: border-box
+    }
+
     body {
       margin: 0;
       min-height: 100vh;
-      padding: 32px 16px;
+      padding: 28px 14px;
       background: var(--bg);
       color: var(--text);
-      font: 16px/1.5 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font: 16px/1.5 system-ui, sans-serif
     }
-    main { width: min(820px, 100%); margin: 0 auto; }
-    h1 { margin: 0 0 8px; font-size: clamp(1.8rem, 5vw, 2.5rem); }
-    .intro { margin: 0 0 24px; color: var(--muted); }
-    .panel {
-      padding: 20px;
+
+    main {
+      width: min(820px, 100%);
+      margin: auto
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: clamp(1.8rem, 5vw, 2.5rem)
+    }
+
+    h2 {
+      font-size: 1.1rem;
+      margin: 0
+    }
+
+    .intro,
+    .small {
+      color: var(--muted)
+    }
+
+    .intro {
+      margin: 0 0 22px
+    }
+
+    .small {
+      font-size: .88rem;
+      margin-top: 18px
+    }
+
+    .panel,
+    .section {
+      padding: 18px;
       border: 1px solid var(--border);
-      border-radius: 16px;
+      border-radius: 15px;
       background: var(--panel);
+      margin-bottom: 14px
     }
-    label { display: block; margin-bottom: 8px; font-weight: 650; }
-    .controls { display: flex; gap: 10px; }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 650
+    }
+
+    .controls {
+      display: flex;
+      gap: 9px;
+      flex-wrap: wrap
+    }
+
     input {
       flex: 1;
       min-width: 0;
-      padding: 13px 14px;
+      padding: 12px;
       border: 1px solid var(--border);
-      border-radius: 10px;
+      border-radius: 9px;
       background: #0e1118;
       color: var(--text);
-      font: inherit;
+      font: inherit
     }
-    input:focus { outline: 2px solid #ff7777; outline-offset: 2px; }
+
     button {
-      padding: 12px 16px;
+      padding: 10px 13px;
       border: 0;
-      border-radius: 10px;
+      border-radius: 9px;
       background: var(--accent);
       color: white;
       font: inherit;
       font-weight: 700;
-      cursor: pointer;
-      white-space: nowrap;
+      cursor: pointer
     }
-    button:hover { filter: brightness(1.1); }
-    .message { min-height: 24px; margin: 10px 0 0; color: var(--muted); font-size: .93rem; }
-    .player { margin-top: 20px; }
+
+    button.secondary {
+      background: #303747
+    }
+
+    button:hover {
+      filter: brightness(1.1)
+    }
+
+    button:disabled {
+      opacity: .5
+    }
+
+    .message {
+      min-height: 22px;
+      margin: 9px 0;
+      color: var(--muted);
+      font-size: .9rem
+    }
+
+    .player {
+      margin-top: 16px
+    }
+
     .video-frame {
       position: relative;
       width: 100%;
-      aspect-ratio: 16 / 9;
+      aspect-ratio: 16/9;
       overflow: hidden;
       border-radius: 12px;
-      background: #050505;
+      background: #050505
     }
+
     .video-frame iframe {
       position: absolute;
       inset: 0;
       width: 100%;
       height: 100%;
-      border: 0;
+      border: 0
     }
+
     .empty {
       display: grid;
       place-items: center;
-      min-height: 220px;
-      padding: 24px;
+      min-height: 200px;
+      padding: 20px;
       border: 1px dashed var(--border);
       border-radius: 12px;
       color: var(--muted);
-      text-align: center;
+      text-align: center
     }
-    .small { margin-top: 18px; color: var(--muted); font-size: .88rem; }
-    @media (max-width: 560px) {
-      .controls { flex-direction: column; }
-      button { width: 100%; }
-      .panel { padding: 16px; }
+
+    .library {
+      display: grid;
+      gap: 14px
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px
+    }
+
+    .section-head button {
+      font-size: .82rem;
+      padding: 7px 10px
+    }
+
+    .list {
+      display: grid;
+      gap: 9px
+    }
+
+    .item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px;
+      border-radius: 9px;
+      background: #10141c;
+      min-width: 0
+    }
+
+    .item-info {
+      flex: 1;
+      min-width: 0
+    }
+
+    .item-title {
+      font-weight: 650;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap
+    }
+
+    .item-meta,
+    .empty-list {
+      color: var(--muted);
+      font-size: .82rem
+    }
+
+    .item-actions {
+      display: flex;
+      gap: 5px;
+      flex-wrap: wrap
+    }
+
+    .item-actions button {
+      padding: 7px 9px;
+      font-size: .8rem
+    }
+
+    @media(max-width:560px) {
+      body {
+        padding: 20px 10px
+      }
+
+      .panel,
+      .section {
+        padding: 14px
+      }
+
+      .controls input {
+        flex-basis: 100%
+      }
+
+      .controls button {
+        flex: 1
+      }
+
+      .item {
+        align-items: flex-start;
+        flex-wrap: wrap
+      }
+
+      .item-actions {
+        width: 100%
+      }
+
+      .item-actions button {
+        flex: 1
+      }
     }
   </style>
 </head>
+
 <body>
   <main>
     <h1>YouTube Embedder</h1>
-    <p class="intro">Paste a YouTube link to play the video right here.</p>
-
-    <section class="panel" aria-label="YouTube video player">
+    <p class="intro">Play videos, keep a queue, and pick up where you left off.
+    </p>
+    <section class="panel" aria-label="YouTube player">
       <form id="video-form">
         <label for="youtube-url">YouTube URL</label>
         <div class="controls">
-          <input
-            id="youtube-url"
-            name="youtube-url"
-            type="url"
-            placeholder="https://www.youtube.com/watch?v=..."
-            autocomplete="url"
-            required
-          >
-          <button type="submit">Embed Video</button>
+          <input id="youtube-url" type="url"
+            placeholder="https://www.youtube.com/watch?v=..." required>
+          <button type="submit">Play</button>
+          <button type="button" class="secondary" id="add-queue">Add to
+            queue</button>
         </div>
         <p class="message" id="message" role="status" aria-live="polite"></p>
       </form>
-
       <div class="player" id="player">
-        <div class="empty">Your embedded video will appear here.</div>
+        <div class="empty">Your video will appear here.</div>
+      </div>
+      <div class="controls" style="margin-top:12px">
+        <button type="button" class="secondary" id="next">Next video</button>
+        <button type="button" class="secondary" id="resume-latest" hidden>Resume
+          latest</button>
       </div>
     </section>
-
-    <p class="small">Tip: Standard YouTube links, youtu.be links, and YouTube Shorts links are supported. Some videos may not allow embedding.</p>
+    <div class="library">
+      <section class="section">
+        <div class="section-head">
+          <h2>Queue <span id="queue-count">(0)</span></h2><button
+            class="secondary" id="clear-queue">Clear queue</button>
+        </div>
+        <div class="list" id="queue-list"></div>
+      </section>
+      <section class="section">
+        <div class="section-head">
+          <h2>History</h2><button class="secondary" id="clear-history">Clear
+            history</button>
+        </div>
+        <div class="list" id="history-list"></div>
+      </section>
+    </div>
+    <p class="small">Supports YouTube, youtu.be, Shorts, and live links.
+      Progress is saved in this browser.</p>
   </main>
-
   <script>
-    const form = document.getElementById('video-form');
-    const input = document.getElementById('youtube-url');
-    const player = document.getElementById('player');
-    const message = document.getElementById('message');
+    const $ = id => document.getElementById(id);
+    const form = $('video-form'),
+      input = $('youtube-url'),
+      playerBox = $('player'),
+      message = $('message');
+    const queueList = $('queue-list'),
+      historyList = $('history-list');
+    const KEY = 'ytEmbedder_v1',
+      MAX_HISTORY = 100;
+    let data = load(),
+      ytPlayer = null,
+      currentId = null,
+      apiReady = false,
+      pending = null,
+      saveTimer = null;
 
-    function getYouTubeVideoId(rawUrl) {
-      let url;
+    function load() {
       try {
-        url = new URL(rawUrl);
+        const d = JSON.parse(localStorage.getItem(KEY) || '{}');
+        return {
+          queue: Array.isArray(d.queue) ? d.queue : [],
+          history: Array.isArray(d.history) ? d.history : []
+        }
       } catch {
-        return null;
-      }
-
-      const host = url.hostname.toLowerCase().replace(/^www\./, '');
-      let id = null;
-
-      if (host === 'youtu.be') {
-        id = url.pathname.split('/').filter(Boolean)[0];
-      } else if (host === 'youtube.com' || host === 'm.youtube.com' || host === 'music.youtube.com') {
-        if (url.pathname === '/watch') {
-          id = url.searchParams.get('v');
-        } else {
-          const parts = url.pathname.split('/').filter(Boolean);
-          if (['embed', 'shorts', 'live', 'v'].includes(parts[0])) {
-            id = parts[1];
-          }
+        return {
+          queue: [],
+          history: []
         }
       }
-
-      // YouTube video IDs are 11 characters using letters, numbers, _ and -.
-      return id && /^[A-Za-z0-9_-]{11}$/.test(id) ? id : null;
     }
 
-    form.addEventListener('submit', (event) => {
-      event.preventDefault();
-      const videoId = getYouTubeVideoId(input.value.trim());
-
-      if (!videoId) {
-        message.textContent = 'Please enter a valid YouTube video URL.';
-        player.replaceChildren();
-        const empty = document.createElement('div');
-        empty.className = 'empty';
-        empty.textContent = 'Check the link and try again.';
-        player.appendChild(empty);
-        return;
+    function save() {
+      try {
+        localStorage.setItem(KEY, JSON.stringify(data))
+      } catch {
+        message.textContent = 'Could not save data in this browser.'
       }
+    }
 
+    function parseId(raw) {
+      let u;
+      try {
+        u = new URL(raw)
+      } catch {
+        return null
+      }
+      let h = u.hostname.toLowerCase().replace(/^www\./, ''),
+        id = null;
+      if (h === 'youtu.be') id = u.pathname.split('/').filter(Boolean)[0];
+      else if (['youtube.com', 'm.youtube.com', 'music.youtube.com'].includes(
+        h)) {
+        if (u.pathname === '/watch') id = u.searchParams.get('v');
+        else {
+          let p = u.pathname.split('/').filter(Boolean);
+          if (['embed', 'shorts', 'live', 'v'].includes(p[0])) id = p[1]
+        }
+      }
+      return id && /^[A-Za-z0-9_-]{11}$/.test(id) ? id : null
+    }
+
+    function entry(id) {
+      return data.history.find(x => x.id === id)
+    }
+
+    function time(n) {
+      if (!Number.isFinite(n) || n < 0) n = 0;
+      n = Math.floor(n);
+      let h = Math.floor(n / 3600),
+        m = Math.floor(n % 3600 / 60),
+        s = n % 60;
+      return h ?
+        `${h}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}` :
+        `${m}:${String(s).padStart(2,'0')}`
+    }
+
+    function remember(id) {
+      let e = entry(id);
+      if (!e) e = {
+        id,
+        position: 0,
+        duration: 0,
+        updated: Date.now()
+      };
+      else e.updated = Date.now();
+      data.history = [e, ...data.history.filter(x => x.id !== id)].slice(0,
+        MAX_HISTORY);
+      save();
+      renderHistory()
+    }
+
+    function saveProgress() {
+      if (!ytPlayer || !currentId || typeof ytPlayer.getCurrentTime !==
+        'function') return;
+      try {
+        let e = entry(currentId);
+        if (!e) return;
+        let p = ytPlayer.getCurrentTime(),
+          d = ytPlayer.getDuration();
+        if (Number.isFinite(p)) e.position = p;
+        if (Number.isFinite(d) && d > 0) e.duration = d;
+        e.updated = Date.now();
+        save();
+        renderHistory()
+      } catch {}
+    }
+
+    function play(id, resume = false) {
+      if (!apiReady) {
+        pending = {
+          id,
+          resume
+        };
+        message.textContent = 'Loading YouTube player…';
+        return
+      }
+      currentId = id;
+      remember(id);
       message.textContent = '';
-      const frame = document.createElement('div');
-      frame.className = 'video-frame';
+      if (!ytPlayer) {
+        playerBox.replaceChildren();
+        let frame = document.createElement('div');
+        frame.className = 'video-frame';
+        let mount = document.createElement('div');
+        mount.id = 'yt-player';
+        frame.append(mount);
+        playerBox.append(frame);
+        ytPlayer = new YT.Player('yt-player', {
+          videoId: id,
+          playerVars: {
+            playsinline: 1,
+            enablejsapi: 1,
+            origin: location.origin
+          },
+          events: {
+            onReady: e => {
+              let saved = entry(id);
+              if (resume && saved && saved.position > 5) e.target.seekTo(
+                saved.position, true);
+              e.target.playVideo();
+              startTimer()
+            },
+            onStateChange: onState,
+            onError: () => message.textContent =
+              'This video may not allow embedding. Try another video.'
+          }
+        });
+      } else {
+        ytPlayer.loadVideoById(id);
+        if (resume) {
+          let saved = entry(id);
+          if (saved && saved.position > 5) setTimeout(() => {
+            if (ytPlayer && currentId === id) ytPlayer.seekTo(saved
+              .position, true)
+          }, 1000)
+        }
+      }
+    }
 
-      const iframe = document.createElement('iframe');
-      iframe.src = `https://www.youtube.com/embed/${videoId}`;
-      iframe.title = 'Embedded YouTube video';
-      iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
-      iframe.allowFullscreen = true;
-      iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+    function startTimer() {
+      clearInterval(saveTimer);
+      saveTimer = setInterval(saveProgress, 7000)
+    }
 
-      frame.appendChild(iframe);
-      player.replaceChildren(frame);
+    function onState(e) {
+      if (e.data === YT.PlayerState.PAUSED || e.data === YT.PlayerState.ENDED)
+        saveProgress();
+      if (e.data === YT.PlayerState.ENDED) nextVideo();
+      if (e.data === YT.PlayerState.PLAYING) {
+        let x = entry(currentId);
+        if (x) {
+          x.duration = ytPlayer.getDuration() || x.duration;
+          save()
+        }
+      }
+    }
+
+    function nextVideo() {
+      if (!data.queue.length) {
+        message.textContent = 'Queue finished.';
+        return
+      }
+      let item = data.queue.shift();
+      save();
+      renderQueue();
+      play(item.id, false)
+    }
+
+    function addQueue(id) {
+      data.queue.push({
+        id,
+        added: Date.now()
+      });
+      save();
+      renderQueue();
+      message.textContent = 'Added to queue.'
+    }
+
+    function btn(text, fn) {
+      let b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'secondary';
+      b.textContent = text;
+      b.addEventListener('click', fn);
+      return b
+    }
+
+    function renderQueue() {
+      $('queue-count').textContent = `(${data.queue.length})`;
+      queueList.replaceChildren();
+      if (!data.queue.length) {
+        queueList.innerHTML =
+          '<div class="empty-list">Your queue is empty.</div>';
+        return
+      }
+      data.queue.forEach((x, i) => {
+        let row = document.createElement('div');
+        row.className = 'item';
+        let info = document.createElement('div');
+        info.className = 'item-info';
+        let title = document.createElement('div');
+        title.className = 'item-title';
+        title.textContent = 'YouTube video · ' + x.id;
+        let meta = document.createElement('div');
+        meta.className = 'item-meta';
+        meta.textContent = i === 0 ? 'Next up' : `Queue position ${i+1}`;
+        info.append(title, meta);
+        let actions = document.createElement('div');
+        actions.className = 'item-actions';
+        actions.append(btn('Play', () => {
+            data.queue.splice(i, 1);
+            save();
+            renderQueue();
+            play(x.id, true)
+          }), btn('↑', () => move(i, -1)), btn('↓', () => move(i, 1)),
+          btn('Remove', () => {
+            data.queue.splice(i, 1);
+            save();
+            renderQueue()
+          }));
+        row.append(info, actions);
+        queueList.append(row)
+      })
+    }
+
+    function move(i, by) {
+      let j = i + by;
+      if (j < 0 || j >= data.queue.length) return;
+      [data.queue[i], data.queue[j]] = [data.queue[j], data.queue[i]];
+      save();
+      renderQueue()
+    }
+
+    function renderHistory() {
+      historyList.replaceChildren();
+      $('resume-latest').hidden = !data.history.length;
+      if (!data.history.length) {
+        historyList.innerHTML =
+          '<div class="empty-list">Videos you play will appear here.</div>';
+        return
+      }
+      data.history.forEach(x => {
+        let row = document.createElement('div');
+        row.className = 'item';
+        let info = document.createElement('div');
+        info.className = 'item-info';
+        let title = document.createElement('div');
+        title.className = 'item-title';
+        title.textContent = 'YouTube video · ' + x.id;
+        let meta = document.createElement('div');
+        meta.className = 'item-meta';
+        meta.textContent = (x.duration ?
+            `${time(x.position)} / ${time(x.duration)}` :
+            `Saved at ${time(x.position)}`) + ' · ' + new Date(x.updated)
+          .toLocaleString();
+        info.append(title, meta);
+        let actions = document.createElement('div');
+        actions.className = 'item-actions';
+        actions.append(btn('Resume', () => play(x.id, true)), btn(
+          'Start over', () => {
+            x.position = 0;
+            save();
+            play(x.id, false)
+          }), btn('Queue', () => addQueue(x.id)), btn('Remove', () => {
+          data.history = data.history.filter(y => y.id !== x.id);
+          save();
+          renderHistory()
+        }));
+        row.append(info, actions);
+        historyList.append(row)
+      })
+    }
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      let id = parseId(input.value.trim());
+      if (!id) {
+        message.textContent = 'Please enter a valid YouTube video URL.';
+        return
+      }
+      play(id, false)
     });
+    $('add-queue').addEventListener('click', () => {
+      let id = parseId(input.value.trim());
+      if (!id) {
+        message.textContent = 'Please enter a valid YouTube video URL.';
+        return
+      }
+      addQueue(id)
+    });
+    $('next').addEventListener('click', nextVideo);
+    $('clear-queue').addEventListener('click', () => {
+      data.queue = [];
+      save();
+      renderQueue()
+    });
+    $('clear-history').addEventListener('click', () => {
+      data.history = [];
+      save();
+      renderHistory()
+    });
+    $('resume-latest').addEventListener('click', () => {
+      if (data.history[0]) play(data.history[0].id, true)
+    });
+    window.addEventListener('pagehide', saveProgress);
+    window.onYouTubeIframeAPIReady = () => {
+      apiReady = true;
+      if (pending) {
+        let p = pending;
+        pending = null;
+        play(p.id, p.resume)
+      }
+    };
+    let api = document.createElement('script');
+    api.src = 'https://www.youtube.com/iframe_api';
+    document.head.append(api);
+    renderQueue();
+    renderHistory();
   </script>
 </body>
-</html>
+
+                                                            </html>
